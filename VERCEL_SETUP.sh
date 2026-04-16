@@ -1,0 +1,33 @@
+#!/bin/bash
+
+# Vercel Build Configuration Script
+# Run this script before deploying to Vercel
+
+echo "🔧 Configuring for Vercel Deployment"
+echo "======================================"
+echo ""
+echo "Please follow these steps:"
+echo ""
+echo "1️⃣  Make sure your Render backend is deployed"
+echo "   - Go to Render dashboard"
+echo "   - Copy your backend URL (e.g., https://myapp.render.com)"
+echo ""
+echo "2️⃣  Open Vercel Project Settings"
+echo "   - Go to https://vercel.com/dashboard"
+echo "   - Select your Password Strength Analyzer project"
+echo "   - Go to Settings → Environment Variables"
+echo ""
+echo "3️⃣  Add these Environment Variables:"
+echo "   Key: RENDER_BACKEND_URL"
+echo "   Value: https://your-render-url.render.com"
+echo ""
+echo "4️⃣  Trigger a redeploy:"
+echo "   - Push new changes to GitHub, OR"
+echo "   - Go to Deployments → Click ... on latest → Redeploy"
+echo ""
+echo "5️⃣  Test the deployment:"
+echo "   - Visit your Vercel URL"
+echo "   - Enter a password and click analyze"
+echo "   - Check browser console (F12) for any errors"
+echo ""
+echo "✅ Setup complete!"

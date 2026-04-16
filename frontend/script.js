@@ -4,8 +4,14 @@
  */
 
 // ====== CONFIGURATION ====== 
-// Get API URL from environment variable or use localhost as fallback
-const API_BASE_URL = window.API_BASE_URL || '/api';
+// Get API URL from window variable set by config.js
+const API_BASE_URL = typeof window.API_BASE_URL !== 'undefined' ? window.API_BASE_URL : '/api';
+
+// Debug: Log the API URL being used
+console.log('🔌 API Base URL:', API_BASE_URL);
+console.log('📍 Current hostname:', window.location.hostname);
+console.log('🌍 Current origin:', window.location.origin);
+
 const ANALYSIS_DEBOUNCE_DELAY = 300; // ms
 
 // ====== DOM ELEMENTS ====== 
@@ -99,6 +105,8 @@ async function analyzePassword() {
     showLoadingSpinner(true);
     
     try {
+        console.log('📊 Analyzing password with API:', API_BASE_URL);
+        
         const response = await fetch(`${API_BASE_URL}/analyze`, {
             method: 'POST',
             headers: {
@@ -108,10 +116,13 @@ async function analyzePassword() {
         });
         
         if (!response.ok) {
-            throw new Error('Failed to analyze password');
+            const errorText = await response.text();
+            console.error('❌ API Error Response:', response.status, errorText);
+            throw new Error(`API Error: ${response.status} - ${response.statusText}`);
         }
         
         const result = await response.json();
+        console.log('✅ Analysis successful:', result);
         lastAnalysisResult = result;
         
         // Update UI with results
@@ -122,8 +133,15 @@ async function analyzePassword() {
         updateHistory();
         
     } catch (error) {
-        console.error('Analysis error:', error);
-        showNotification('Error analyzing password', 'error');
+        console.error('❌ Analysis error:', error);
+        console.error('📍 Attempted API URL:', API_BASE_URL);
+        
+        // Show detailed error message
+        const errorMessage = error.message.includes('fetch') 
+            ? `Network Error: Cannot reach API at ${API_BASE_URL}. Make sure backend is running and RENDER_BACKEND_URL is set.`
+            : `Error analyzing password: ${error.message}`;
+        
+        showNotification(errorMessage, 'error');
     } finally {
         showLoadingSpinner(false);
     }

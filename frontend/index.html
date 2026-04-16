@@ -9,16 +9,8 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.js"></script>
     <!-- Font Awesome for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- API Configuration -->
-    <script>
-        // Set API base URL from environment variable or use intelligent defaults
-        const baseUrl = document.location.hostname === 'localhost' ? 'http://localhost:5000/api' : '/api';
-        window.API_BASE_URL = baseUrl;
-        
-        // For production deployments with external API
-        // You can override this by setting window.API_BASE_URL before script.js loads
-        // Example: window.API_BASE_URL = 'https://api.example.com/api';
-    </script>
+    <!-- API Configuration - Load BEFORE script.js -->
+    <script src="config.js"></script>
 </head>
 <body>
     <!-- Navigation -->
