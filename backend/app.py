@@ -432,10 +432,10 @@ def health_check():
     return jsonify({'status': 'ok', 'service': 'Password Strength Analyzer'}), 200
 
 
+# For local development only
 if __name__ == '__main__':
-    # Get configuration from environment variables
-    port = int(os.getenv('PORT', 5000))
-    debug = os.getenv('FLASK_ENV', 'development') == 'development'
-    host = os.getenv('HOST', '0.0.0.0')
-    
-    app.run(debug=debug, host=host, port=port)
+    # Local development configuration
+    app.run(debug=True, host='0.0.0.0', port=5000)
+
+# For production (Gunicorn/Render/Railway): the app object is used directly
+# No need for app.run() - Gunicorn handles server startup

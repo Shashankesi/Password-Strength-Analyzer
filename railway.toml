@@ -1,0 +1,20 @@
+# Railway Deployment Configuration
+# This file tells Railway how to build and run your app
+
+builder = "nixpacks"
+
+# Railway automatically detects Python projects
+# But we need to specify that we want to run from the backend directory
+
+[build]
+# Python version
+pythonVersion = "3.11"
+
+[deploy]
+# Tell Railway where the app is located
+# Use this start command in Railway dashboard:
+# gunicorn -w 2 -b 0.0.0.0:$PORT --timeout 60 backend.app:app
+startCommand = "gunicorn -w 2 -b 0.0.0.0:$PORT --timeout 60 backend.app:app"
+
+# Or if backend folder is at root level, use:
+# cd backend && gunicorn app:app -w 2 -b 0.0.0.0:$PORT --timeout 60
