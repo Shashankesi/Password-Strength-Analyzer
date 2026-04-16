@@ -3,12 +3,6 @@
   "buildCommand": "npm run build",
   "framework": "other",
   "public": "frontend",
-  "rewrites": [
-    {
-      "source": "/api/(.*)",
-      "destination": "http://localhost:5000/$1"
-    }
-  ],
   "env": {
     "FLASK_ENV": "production"
   }

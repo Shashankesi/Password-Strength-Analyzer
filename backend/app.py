@@ -8,10 +8,14 @@ from flask_cors import CORS
 import math
 import re
 import json
+import os
 from datetime import datetime
 
 app = Flask(__name__)
-CORS(app)
+
+# Enable CORS for all routes with proper origin configuration
+cors_origins = os.getenv('CORS_ORIGINS', '*').split(',')
+CORS(app, origins=cors_origins, allow_headers=['Content-Type'])
 
 # In-memory storage for password history (ideally use a database in production)
 password_history = []
@@ -429,4 +433,9 @@ def health_check():
 
 
 if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0', port=5000)
+    # Get configuration from environment variables
+    port = int(os.getenv('PORT', 5000))
+    debug = os.getenv('FLASK_ENV', 'development') == 'development'
+    host = os.getenv('HOST', '0.0.0.0')
+    
+    app.run(debug=debug, host=host, port=port)

@@ -4,7 +4,8 @@
  */
 
 // ====== CONFIGURATION ====== 
-const API_BASE_URL = 'http://localhost:5000/api';
+// Get API URL from environment variable or use localhost as fallback
+const API_BASE_URL = window.API_BASE_URL || '/api';
 const ANALYSIS_DEBOUNCE_DELAY = 300; // ms
 
 // ====== DOM ELEMENTS ====== 
