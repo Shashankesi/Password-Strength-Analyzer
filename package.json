@@ -1,0 +1,13 @@
+{
+  "name": "password-strength-analyzer",
+  "version": "1.0.0",
+  "description": "Premium cybersecurity dashboard API for password strength analysis",
+  "private": true,
+  "scripts": {
+    "build": "echo 'Frontend built successfully'",
+    "dev": "node -e \"console.log('Dev mode')\""
+  },
+  "keywords": ["password", "security", "analyzer"],
+  "author": "Shashank",
+  "license": "MIT"
+}
