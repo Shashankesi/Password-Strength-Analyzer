@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Password Strength Analyzer - Premium Cybersecurity Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- Chart.js for graphs -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.js"></script>
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-content">
+                <div class="navbar-brand">
+                    <i class="fas fa-shield-alt"></i>
+                    <span>Password Strength Analyzer</span>
+                </div>
+                <div class="navbar-controls">
+                    <button class="theme-toggle" id="themeToggle" title="Toggle dark/light mode">
+                        <i class="fas fa-moon"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Container -->
+    <div class="container">
+        <!-- Hero Section -->
+        <section class="hero">
+            <h1>Analyze Your Password Strength</h1>
+            <p>Real-time password security analysis with entropy calculation and crack time estimation</p>
+        </section>
+
+        <!-- Main Grid Layout -->
+        <div class="main-grid">
+            <!-- Left Column: Input & Results -->
+            <div class="left-column">
+                <!-- Password Input Section -->
+                <div class="glass-card input-section">
+                    <h2>
+                        <i class="fas fa-key"></i> Password Input
+                    </h2>
+                    <div class="password-input-wrapper">
+                        <div class="input-container">
+                            <input 
+                                type="password" 
+                                id="passwordInput" 
+                                placeholder="Enter your password here..." 
+                                class="password-input"
+                                autocomplete="off"
+                            >
+                            <button class="toggle-pwd" id="togglePassword" title="Show/Hide password">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </div>
+                        <div class="input-actions">
+                            <button class="btn btn-secondary" id="generatePasswordBtn" title="Generate strong password">
+                                <i class="fas fa-dice"></i> Generate
+                            </button>
+                            <button class="btn btn-secondary" id="copyPasswordBtn" title="Copy to clipboard" style="display: none;">
+                                <i class="fas fa-copy"></i> Copy
+                            </button>
+                            <button class="btn btn-secondary" id="clearHistoryBtn" title="Clear analysis history">
+                                <i class="fas fa-trash"></i> Clear History
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Strength Meter -->
+                <div class="glass-card strength-section">
+                    <h2>
+                        <i class="fas fa-signal"></i> Password Strength
+                    </h2>
+                    <div class="strength-meter">
+                        <div class="strength-bar" id="strengthBar">
+                            <div class="strength-fill" id="strengthFill"></div>
+                        </div>
+                        <div class="strength-label">
+                            <span id="strengthText">No password analyzed</span>
+                            <span class="strength-percentage" id="strengthPercentage">0%</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Results Cards -->
+                <div class="results-grid" id="resultsContainer" style="display: none;">
+                    <div class="metric-card">
+                        <div class="metric-icon">
+                            <i class="fas fa-calculator"></i>
+                        </div>
+                        <div class="metric-content">
+                            <div class="metric-label">Entropy</div>
+                            <div class="metric-value" id="entropyValue">0</div>
+                            <div class="metric-unit">bits</div>
+                        </div>
+                    </div>
+
+                    <div class="metric-card">
+                        <div class="metric-icon">
+                            <i class="fas fa-shield-alt"></i>
+                        </div>
+                        <div class="metric-content">
+                            <div class="metric-label">Strength</div>
+                            <div class="metric-value" id="strengthBadge">-</div>
+                        </div>
+                    </div>
+
+                    <div class="metric-card">
+                        <div class="metric-icon">
+                            <i class="fas fa-keyboard"></i>
+                        </div>
+                        <div class="metric-content">
+                            <div class="metric-label">Character Set</div>
+                            <div class="metric-value" id="charsetValue">0</div>
+                            <div class="metric-unit">unique chars</div>
+                        </div>
+                    </div>
+
+                    <div class="metric-card">
+                        <div class="metric-icon">
+                            <i class="fas fa-hourglass-end"></i>
+                        </div>
+                        <div class="metric-content">
+                            <div class="metric-label">Crack Time</div>
+                            <div class="metric-value" id="crackTimeValue">-</div>
+                        </div>
+                    </div>
+
+                    <div class="metric-card">
+                        <div class="metric-icon">
+                            <i class="fas fa-lock"></i>
+                        </div>
+                        <div class="metric-content">
+                            <div class="metric-label">Length</div>
+                            <div class="metric-value" id="lengthValue">0</div>
+                            <div class="metric-unit">characters</div>
+                        </div>
+                    </div>
+
+                    <div class="metric-card">
+                        <div class="metric-icon">
+                            <i class="fas fa-infinity"></i>
+                        </div>
+                        <div class="metric-content">
+                            <div class="metric-label">Combinations</div>
+                            <div class="metric-value" id="combinationsValue">0</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recommendations Section -->
+                <div class="glass-card recommendations-section" id="recommendationsContainer" style="display: none;">
+                    <h2>
+                        <i class="fas fa-lightbulb"></i> Recommendations
+                    </h2>
+                    <div class="recommendations-list" id="recommendationsList">
+                        <!-- Generated dynamically -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Column: Graphs -->
+            <div class="right-column">
+                <!-- Graph 1: Length vs Combinations -->
+                <div class="glass-card graph-section">
+                    <h2>
+                        <i class="fas fa-chart-line"></i> Length vs Combinations
+                    </h2>
+                    <div class="chart-container">
+                        <canvas id="lengthChart"></canvas>
+                    </div>
+                    <p class="chart-description">Shows how password length exponentially increases security (log scale)</p>
+                </div>
+
+                <!-- Graph 2: Crack Time Comparison -->
+                <div class="glass-card graph-section">
+                    <h2>
+                        <i class="fas fa-chart-bar"></i> Crack Time Comparison
+                    </h2>
+                    <div class="chart-container">
+                        <canvas id="crackTimeChart"></canvas>
+                    </div>
+                    <p class="chart-description">Time to crack comparing various character set scenarios</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- History Section -->
+        <section class="glass-card history-section" id="historySection" style="display: none;">
+            <div class="history-header">
+                <h2>
+                    <i class="fas fa-history"></i> Analysis History
+                </h2>
+                <button class="btn btn-small" id="exportCsvBtn">
+                    <i class="fas fa-download"></i> Export CSV
+                </button>
+            </div>
+            <div class="table-wrapper">
+                <table class="history-table" id="historyTable">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Length</th>
+                            <th>Entropy</th>
+                            <th>Strength</th>
+                            <th>Crack Time</th>
+                            <th>Timestamp</th>
+                        </tr>
+                    </thead>
+                    <tbody id="historyTableBody">
+                        <!-- Generated dynamically -->
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </div>
+
+    <!-- Loading Spinner -->
+    <div class="loading-spinner" id="loadingSpinner" style="display: none;">
+        <div class="spinner"></div>
+        <p>Analyzing password...</p>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2024 Password Strength Analyzer. Built with ❤️ for cybersecurity.</p>
+            <p class="footer-note">Your passwords are analyzed locally and never stored.</p>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="script.js"></script>
+</body>
+</html>
